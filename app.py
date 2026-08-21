@@ -11,7 +11,7 @@ def home():
         # الحصول على الرابط الذي أدخله المستخدم
         user_url = request.form.get('url', '')
         
-        # منطق الفحص البسيط
+        # منطق الفحص البسيط للرابط
         if "login" in user_url.lower() or "verify" in user_url.lower() or "update" in user_url.lower():
             result = "تحذير: هذا الرابط مشبوه وقد يكون محاولة تصيد (Phishing)!"
         else:
