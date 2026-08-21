@@ -1,19 +1,24 @@
 from flask import Flask, render_template, request
 
-# تعريف التطبيق وتحديد مسار المجلدات ليراها السيرفر بوضوح
-app = Flask(__name__, template_folder='templates', static_folder='static')
+app = Flask(__name__)
 
 @app.route('/')
 def home():
-    # هذا المسار يضمن فتح صفحتك الرئيسية عند زيارة الرابط
     return render_template('index.html')
 
 @app.route('/analyze', methods=['POST'])
 def analyze():
-    # الكود الخاص بفحص الرابط الذي كتبتِه مسبقاً يوضع هنا
-    url = request.form.get('url')
-    # يمكنك إضافة المنطق البرمجي الخاص بك للفحص هنا
-    return render_template('index.html', result="الرابط قيد الفحص...", url=url)
+    # الرابط الذي يدخله المستخدم
+    user_url = request.form.get('url', '')
+    
+    # منطق فحص بسيط وآمن كمثال (يمكنك تعديله حسب رغبتك)
+    risk_score = "آمن"
+    if "login" in user_url.lower() or "verify" in user_url.lower() or "update" in user_url.lower():
+        risk_score = "تحذير: قد يكون رابطاً مشبوهاً أو محاولة تصيد!"
+    else:
+        risk_score = "الرابط يبدو طبيعياً."
+
+    return render_template('index.html', result=risk_score, url=user_url)
 
 if __name__ == '__main__':
     app.run(debug=True)
